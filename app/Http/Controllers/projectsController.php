@@ -12,9 +12,7 @@ class projectsController extends Controller
      */
     public function index()
     {
-        return [
-            'projects' => project::paginate(5)
-        ];
+        return project::paginate(5);
     }
 
     /**
@@ -28,9 +26,9 @@ class projectsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(project $project)
     {
-        //
+        return $project;
     }
 
     /**
