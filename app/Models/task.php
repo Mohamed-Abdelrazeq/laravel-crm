@@ -12,6 +12,6 @@ class task extends Model
     public static $status = ['todo', 'in_progress', 'done', 'tested', 'deployed'];
     public function project()
     {
-        return $this->belongsTo(project::class);
+        return $this->belongsTo(project::class, 'project_id');
     }
 }
