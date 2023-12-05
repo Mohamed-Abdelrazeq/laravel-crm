@@ -20,8 +20,8 @@ class TaskFactory extends Factory
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->sentence(10),
             'status' => $this->faker->randomElement(['todo', 'in_progress', 'done', 'tested', 'deployed']),
-            'assigned_to' => $this->faker->numberBetween(1, 10),
-            'created_by' => $this->faker->numberBetween(1, 10),
+            'assigned_to' => $this->faker->numberBetween(1, 100),
+            'created_by' => $this->faker->numberBetween(1, 100),
             'project_id' => $this->faker->numberBetween(1, 10),
         ];
     }

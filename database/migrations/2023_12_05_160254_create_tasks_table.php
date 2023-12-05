@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->string('description', 1000);
             $table->enum('status', ['todo', 'in_progress', 'done', 'tested', 'deployed'])->default('todo');
             $table->foreignId('assigned_to')->nullable()->constrained('users');
-            $table->foreignId('created_by')->nullable()->constrained('users');
-            $table->foreignId('project_id')->nullable()->constrained('projects');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('project_id')->constrained('projects');
             $table->timestamps();
         });
     }
