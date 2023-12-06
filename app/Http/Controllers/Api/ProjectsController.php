@@ -7,6 +7,12 @@ use App\Models\project;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller {
+
+    public function __construct() {
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
+        // $this->authorizeResource(project::class, 'project');
+    }
+
     public function index() {
         return project::paginate(5);
     }
