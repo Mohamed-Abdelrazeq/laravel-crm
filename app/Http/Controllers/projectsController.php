@@ -28,8 +28,18 @@ class projectsController extends Controller {
         return $project;
     }
 
-    public function update(Request $request, string $id) {
-        //
+    public function update(Request $request, project $project) {
+        $project->update([
+            ...$request->validate([
+                'title' => 'sometimes|string|max:255',
+                'description' => 'sometimes|string|max:1000',
+            ]),
+            'user_id' => 1,
+        ]);
+        return response()->json([
+            'message' => 'Project updated successfully',
+            'project' => $project
+        ]);
     }
 
     public function destroy(project $project) {
