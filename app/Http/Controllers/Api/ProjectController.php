@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\project;
 use Illuminate\Http\Request;
 
-class ProjectsController extends Controller {
-    public function index() {
+class ProjectController extends Controller
+{
+    public function index()
+    {
         return project::paginate(5);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $project = Project::create([
             ...$request->validate([
                 'title' => 'required|string|max:255',
@@ -25,11 +28,13 @@ class ProjectsController extends Controller {
         ]);
     }
 
-    public function show(project $project) {
+    public function show(project $project)
+    {
         return $project;
     }
 
-    public function update(Request $request, project $project) {
+    public function update(Request $request, project $project)
+    {
         $project->update([
             ...$request->validate([
                 'title' => 'sometimes|string|max:255',
@@ -43,7 +48,8 @@ class ProjectsController extends Controller {
         ]);
     }
 
-    public function destroy(project $project) {
+    public function destroy(project $project)
+    {
         $project->delete();
         return response()->json([
             'message' => 'Project deleted successfully'
