@@ -10,6 +10,7 @@ class ProjectPolicy
 
     public function viewAny(?User $user): bool
     {
+        // admin / project member
         return true;
     }
 
@@ -18,6 +19,7 @@ class ProjectPolicy
      */
     public function view(?User $user, Project $project): bool
     {
+        // admin / project member
         return true;
     }
 
@@ -34,7 +36,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        return true;
+        return $user->id === $project->user_id;
     }
 
     /**
@@ -42,7 +44,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        return true;
+        return $user->id === $project->user_id;
     }
 
     /**
