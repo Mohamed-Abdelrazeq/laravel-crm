@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\project;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -11,11 +11,13 @@ class ProjectController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->authorizeResource(Project::class, 'project');
+
     }
 
     public function index()
     {
-        return project::paginate(5);
+        return Project::paginate(5);
     }
 
     public function store(Request $request)
@@ -33,12 +35,12 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function show(project $project)
+    public function show(Project $project)
     {
         return $project;
     }
 
-    public function update(Request $request, project $project)
+    public function update(Request $request, Project $project)
     {
         $project->update([
             ...$request->validate([
@@ -53,7 +55,7 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function destroy(project $project)
+    public function destroy(Project $project)
     {
         $project->delete();
         return response()->json([
