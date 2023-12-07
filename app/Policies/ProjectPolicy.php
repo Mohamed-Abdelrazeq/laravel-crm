@@ -7,21 +7,17 @@ use App\Models\User;
 
 class ProjectPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+
+    public function viewAny(?User $user): bool
     {
-        dd('viewAny');
         return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Project $project): bool
+    public function view(?User $user, Project $project): bool
     {
-        dd('viewAny');
         return true;
     }
 
@@ -30,7 +26,6 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        dd('viewAny');
         return true;
     }
 
@@ -39,7 +34,6 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        dd('viewAny');
         return true;
     }
 
@@ -48,7 +42,6 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        dd('viewAny');
         return true;
     }
 

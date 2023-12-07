@@ -27,7 +27,7 @@ class ProjectController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'required|string|max:1000',
             ]),
-            'user_id' => 1,
+            'user_id' => request()->user()->id,
         ]);
         return response()->json([
             'message' => 'Project created successfully',
@@ -47,7 +47,7 @@ class ProjectController extends Controller
                 'title' => 'sometimes|string|max:255',
                 'description' => 'sometimes|string|max:1000',
             ]),
-            'user_id' => 1,
+            'user_id' => request()->user()->id,
         ]);
         return response()->json([
             'message' => 'Project updated successfully',
