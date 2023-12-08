@@ -10,14 +10,14 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->middleware('auth:sanctum');
         $this->authorizeResource(Project::class, 'project');
 
     }
 
     public function index()
     {
-        return Project::paginate(5);
+        return request()->user()->projects;
     }
 
     public function store(Request $request)
@@ -37,7 +37,10 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+
         return $project;
+        // return Project::findOrFail($id);
+        // return Project::with(['tasks', 'users'])->findOrFail($id);
     }
 
     public function update(Request $request, Project $project)

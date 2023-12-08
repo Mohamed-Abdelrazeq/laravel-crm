@@ -8,19 +8,18 @@ use App\Models\User;
 class ProjectPolicy
 {
 
-    public function viewAny(?User $user): bool
+    public function viewAny(User $user): bool
     {
-        // admin / project member
         return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, Project $project): bool
+    public function view(User $user, Project $project): bool
     {
-        // admin / project member
         return true;
+        // return $user->projects->contains($project) || $user->id === $project->user_id;
     }
 
     /**
