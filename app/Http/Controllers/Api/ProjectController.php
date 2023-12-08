@@ -18,7 +18,11 @@ class ProjectController extends Controller
 
     public function index()
     {
-        return ProjectResource::collection(request()->user()->projects->load(['tasks', 'users']));
+        return ProjectResource::collection(
+            request()->user()
+                ->projects
+            // ->load(['tasks', 'users'])
+        );
     }
 
     public function store(Request $request)
@@ -38,13 +42,13 @@ class ProjectController extends Controller
 
         return response()->json([
             'message' => 'Project created successfully',
-            'project' => $project
+            'project' => new ProjectResource($project->load(['tasks', 'users']))
         ]);
     }
 
     public function show(Project $project)
     {
-        return Project::with(['tasks', 'users'])->findOrFail($project->id);
+        return new ProjectResource($project->load(['tasks', 'users']));
     }
 
     public function update(Request $request, Project $project)
@@ -58,7 +62,7 @@ class ProjectController extends Controller
         ]);
         return response()->json([
             'message' => 'Project updated successfully',
-            'project' => $project
+            'project' => new ProjectResource($project->load(['tasks', 'users']))
         ]);
     }
 
