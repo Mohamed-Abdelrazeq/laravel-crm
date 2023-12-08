@@ -18,19 +18,24 @@ class ProjectController extends Controller
 
     public function index()
     {
-        return ProjectResource::collection(Project::with(['tasks', 'users'])->paginate(10));
-        // return request()->user()->projects;
+        return ProjectResource::collection(request()->user()->projects->load(['tasks', 'users']));
     }
 
     public function store(Request $request)
     {
+        // Create Project
         $project = Project::create([
             ...$request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'required|string|max:1000',
             ]),
             'user_id' => request()->user()->id,
+            'users' => [request()->user()->id],
         ]);
+
+        // Attach owner to project
+        $project->users()->attach(request()->user()->id);
+
         return response()->json([
             'message' => 'Project created successfully',
             'project' => $project
