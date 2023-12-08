@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\Task::factory(1000)->create();
 
         \App\Models\Project::all()->each(function ($project) {
-            $project->users()->attach(\App\Models\User::all()->random(10));
+            $project->users()->sync($project->user_id);
+            $project->users()->syncWithoutDetaching(\App\Models\User::all()->random(10));
         });
     }
 }
