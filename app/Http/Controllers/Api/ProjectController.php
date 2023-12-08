@@ -37,10 +37,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-
-        return $project;
-        // return Project::findOrFail($id);
-        // return Project::with(['tasks', 'users'])->findOrFail($id);
+        return Project::with(['tasks', 'users'])->findOrFail($project->id);
     }
 
     public function update(Request $request, Project $project)

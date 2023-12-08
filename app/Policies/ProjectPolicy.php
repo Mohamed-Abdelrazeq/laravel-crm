@@ -18,8 +18,7 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project): bool
     {
-        return true;
-        // return $user->projects->contains($project) || $user->id === $project->user_id;
+        return $user->projects->contains($project) || $user->id === $project->user_id;
     }
 
     /**
