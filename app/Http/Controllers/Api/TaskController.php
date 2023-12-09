@@ -29,7 +29,7 @@ class TaskController extends Controller
                 [
                     'title' => 'required|max:255',
                     'description' => 'required|max:1000',
-                    'status' => 'sometimes|in:todo,in_progress,done,tested,deployed' ?? 'todo',
+                    'status' => 'sometimes|in:todo,in_progress,done,tested,deployed',
                     'assigned_to' => 'sometimes',
                 ],
             ),
