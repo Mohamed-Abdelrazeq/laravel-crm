@@ -44,9 +44,19 @@ class TaskController extends Controller
         return new TaskResource($task);
     }
 
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Project $project, Task $task)
     {
-        //
+        $task->update([
+            ...$request->validate(
+                [
+                    'title' => 'sometimes|max:255',
+                    'description' => 'sometimes|max:1000',
+                    'status' => 'sometimes|in:todo,in_progress,done,tested,deployed',
+                    'assigned_to' => 'sometimes',
+                ],
+            ),
+        ]);
+        return new TaskResource($task);
     }
 
     public function destroy(Task $task)
