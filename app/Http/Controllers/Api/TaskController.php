@@ -21,10 +21,24 @@ class TaskController extends Controller
         return TaskResource::collection($project->tasks);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Project $project)
     {
-        //
+        // VALIDATE THAT ASSIGNED TO IS A USER IN THE PROJECT
+        $task = $project->tasks()->create([
+            ...$request->validate(
+                [
+                    'title' => 'required|max:255',
+                    'description' => 'required|max:1000',
+                    'status' => 'sometimes|in:todo,in_progress,done,tested,deployed' ?? 'todo',
+                    'assigned_to' => 'sometimes',
+                ],
+            ),
+            'created_by' => $request->user()->id,
+            'project_id' => $project->id,
+        ]);
+        return new TaskResource($task);
     }
+
 
     public function show(Task $task)
     {
