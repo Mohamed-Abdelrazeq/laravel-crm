@@ -39,10 +39,9 @@ class TaskController extends Controller
         return new TaskResource($task);
     }
 
-
-    public function show(Task $task)
+    public function show(Project $project, Task $task)
     {
-        //
+        return new TaskResource($task);
     }
 
     public function update(Request $request, Task $task)
