@@ -59,8 +59,11 @@ class TaskController extends Controller
         return new TaskResource($task);
     }
 
-    public function destroy(Task $task)
+    public function destroy(Project $project, Task $task)
     {
-        //
+        $task->delete();
+        return response()->json([
+            'message' => 'Task deleted successfully',
+        ]);
     }
 }
