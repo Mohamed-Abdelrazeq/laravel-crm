@@ -24,6 +24,12 @@ class TaskController extends Controller
     public function store(Request $request, Project $project)
     {
         // VALIDATE THAT ASSIGNED TO IS A USER IN THE PROJECT
+        if (!$this->isUserInProject($request, $project)) {
+            return response()->json([
+                'message' => 'User is not in the project',
+            ], 403);
+        }
+
         $task = $project->tasks()->create([
             ...$request->validate(
                 [
@@ -46,6 +52,13 @@ class TaskController extends Controller
 
     public function update(Request $request, Project $project, Task $task)
     {
+        // VALIDATE THAT ASSIGNED TO IS A USER IN THE PROJECT
+        if (!$this->isUserInProject($request, $project)) {
+            return response()->json([
+                'message' => 'User is not in the project',
+            ], 403);
+        }
+
         $task->update([
             ...$request->validate(
                 [
@@ -65,5 +78,16 @@ class TaskController extends Controller
         return response()->json([
             'message' => 'Task deleted successfully',
         ]);
+    }
+
+    protected function isUserInProject($request, $project)
+    {
+        // dd($request->assigned_to);
+        if ($request->has('assigned_to')) {
+            if (!$project->users()->where('user_id', $request->assigned_to)->exists()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
