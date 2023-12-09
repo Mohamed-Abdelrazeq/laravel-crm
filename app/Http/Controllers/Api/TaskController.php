@@ -82,7 +82,6 @@ class TaskController extends Controller
 
     protected function isUserInProject($request, $project)
     {
-        // dd($request->assigned_to);
         if ($request->has('assigned_to')) {
             if (!$project->users()->where('user_id', $request->assigned_to)->exists()) {
                 return false;
