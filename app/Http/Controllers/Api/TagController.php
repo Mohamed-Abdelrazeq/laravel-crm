@@ -23,7 +23,14 @@ class TagController extends Controller
 
     public function store(Request $request, Project $project)
     {
-        //
+        $tag = $project->tags()->create([
+            ...$request->validate([
+                'name' => 'required|string|max:255',
+            ]),
+            'project_id' => $project->id,
+        ]);
+
+        return new TagResource($tag);
     }
 
     public function show(Project $project, Tag $tag)
@@ -33,11 +40,19 @@ class TagController extends Controller
 
     public function update(Request $request, Project $project, Tag $tag)
     {
-        //
+        $tag->update([
+            ...$request->validate([
+                'name' => 'sometimes|string|max:255',
+            ]),
+        ]);
+
+        return new TagResource($tag);
     }
 
     public function destroy(Project $project, Tag $tag)
     {
-        //
+        $tag->delete();
+
+        return response()->json(['message' => 'Tag deleted successfully'], 200);
     }
 }
