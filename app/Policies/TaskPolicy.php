@@ -10,7 +10,7 @@ class TaskPolicy
 
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->projects->contains(request()->route()->parameter('project'));
     }
 
 
