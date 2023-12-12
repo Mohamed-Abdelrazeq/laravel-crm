@@ -15,8 +15,8 @@ class TagPolicy
 
     public function view(User $user, Tag $tag): bool
     {
-
-        return $user->projects->contains(request()->route()->parameter('project'));
+        // dd($tag->project_id == request()->route()->parameter('project')->id);
+        return $user->projects->contains(request()->route()->parameter('project')) && $tag->project_id == request()->route()->parameter('project')->id;
     }
 
     public function create(User $user): bool
@@ -27,13 +27,12 @@ class TagPolicy
 
     public function update(User $user, Tag $tag): bool
     {
-        return $user->projects->contains(request()->route()->parameter('project'));
-
+        return $user->projects->contains(request()->route()->parameter('project')) && $tag->project_id == request()->route()->parameter('project')->id;
     }
 
     public function delete(User $user, Tag $tag): bool
     {
-        return $user->projects->contains(request()->route()->parameter('project'));
+        return $user->projects->contains(request()->route()->parameter('project')) && $tag->project_id == request()->route()->parameter('project')->id;
     }
 
 }
