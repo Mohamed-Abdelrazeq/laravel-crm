@@ -2,10 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Project;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TagPolicy
 {
@@ -29,14 +27,13 @@ class TagPolicy
 
     public function update(User $user, Tag $tag): bool
     {
-        return true;
+        return $user->projects->contains(request()->route()->parameter('project'));
 
     }
 
     public function delete(User $user, Tag $tag): bool
     {
-        return true;
-
+        return $user->projects->contains(request()->route()->parameter('project'));
     }
 
 }
