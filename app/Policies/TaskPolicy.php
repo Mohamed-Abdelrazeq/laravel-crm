@@ -21,7 +21,7 @@ class TaskPolicy
 
     public function create(User $user): bool
     {
-        return true;
+        return $user->projects->contains(request()->route()->parameter('project'));
     }
 
     public function update(User $user, Task $task): bool

@@ -15,14 +15,15 @@ class TagPolicy
         return $user->projects->contains(request()->route()->parameter('project'));
     }
 
-    public function view(User $user, Project $project, Tag $tag): bool
+    public function view(User $user, Tag $tag): bool
     {
-        return true;
+
+        return $user->projects->contains(request()->route()->parameter('project'));
     }
 
     public function create(User $user): bool
     {
-        return true;
+        return $user->projects->contains(request()->route()->parameter('project'));
 
     }
 
