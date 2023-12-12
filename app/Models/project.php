@@ -21,4 +21,9 @@ class Project extends Model
             ->withTimestamps()
             ->as('project_users');
     }
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class, 'project_id');
+    }
 }
