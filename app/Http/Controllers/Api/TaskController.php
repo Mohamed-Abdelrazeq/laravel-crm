@@ -32,9 +32,10 @@ class TaskController extends Controller
             'assigned_to' => 'sometimes',
             'tags' => 'sometimes|array',
         ]);
+        $tags = $data['tags'] ?? [];
 
         // VALIDATE THE TAGS
-        if (!$this->isValidTags($request, $project, $data['tags'])) {
+        if (!$this->isValidTags($request, $project, $tags)) {
             return response()->json([
                 'message' => 'Invalid tags',
             ], 422);
@@ -48,7 +49,7 @@ class TaskController extends Controller
         ]);
 
         // ATTACH THE TAGS
-        $task->tags()->attach($data['tags']);
+        $task->tags()->attach($tags);
 
         // RETURN THE TASK
         return new TaskResource($task);
@@ -61,16 +62,32 @@ class TaskController extends Controller
 
     public function update(Request $request, Project $project, Task $task)
     {
-        $task->update([
-            ...$request->validate(
-                [
-                    'title' => 'sometimes|max:255',
-                    'description' => 'sometimes|max:1000',
-                    'status' => 'sometimes|in:todo,in_progress,done,tested,deployed',
-                    'assigned_to' => 'sometimes',
-                ],
-            ),
+        // PARSE DATA
+        $data = $request->validate([
+            'title' => 'sometimes|max:255',
+            'description' => 'sometimes|max:1000',
+            'status' => 'sometimes|in:todo,in_progress,done,tested,deployed',
+            'assigned_to' => 'sometimes',
+            'tags' => 'sometimes|array',
         ]);
+        $tags = $data['tags'] ?? [];
+
+        // VALIDATE THE TAGS
+        if (!$this->isValidTags($request, $project, $tags)) {
+            return response()->json([
+                'message' => 'Invalid tags',
+            ], 422);
+        }
+
+        // UPDATE THE TASK
+        $task->update($data);
+
+        // SYNC THE TAGS
+        if (count($tags) > 0) {
+            $task->tags()->sync($tags);
+        }
+
+        // RETURN THE TASK
         return new TaskResource($task);
     }
 
