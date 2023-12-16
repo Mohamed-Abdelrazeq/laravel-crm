@@ -19,7 +19,7 @@ class TaskController extends Controller
     }
     public function index(Project $project)
     {
-        return TaskResource::collection($project->tasks);
+        return TaskResource::collection($project->tasks()->paginate(10));
     }
 
     public function store(Request $request, Project $project)
