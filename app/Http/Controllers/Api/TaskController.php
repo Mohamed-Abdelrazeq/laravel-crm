@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
+use App\Models\Tag;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -23,18 +24,33 @@ class TaskController extends Controller
 
     public function store(Request $request, Project $project)
     {
+        // PARSE DATA
+        $data = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:1000',
+            'status' => 'sometimes|in:todo,in_progress,done,tested,deployed',
+            'assigned_to' => 'sometimes',
+            'tags' => 'sometimes|array',
+        ]);
+
+        // VALIDATE THE TAGS
+        if (!$this->isValidTags($request, $project, $data['tags'])) {
+            return response()->json([
+                'message' => 'Invalid tags',
+            ], 422);
+        }
+
+        // CREATE THE TASK
         $task = $project->tasks()->create([
-            ...$request->validate(
-                [
-                    'title' => 'required|max:255',
-                    'description' => 'required|max:1000',
-                    'status' => 'sometimes|in:todo,in_progress,done,tested,deployed',
-                    'assigned_to' => 'sometimes',
-                ],
-            ),
+            ...$data,
             'created_by' => $request->user()->id,
             'project_id' => $project->id,
         ]);
+
+        // ATTACH THE TAGS
+        $task->tags()->attach($data['tags']);
+
+        // RETURN THE TASK
         return new TaskResource($task);
     }
 
@@ -64,5 +80,10 @@ class TaskController extends Controller
         return response()->json([
             'message' => 'Task deleted successfully',
         ]);
+    }
+
+    protected function isValidTags(Request $request, Project $project, $tags): bool
+    {
+        return $project->tags()->whereIn('id', $tags)->count() === count($tags);
     }
 }
