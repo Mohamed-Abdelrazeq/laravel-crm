@@ -12,9 +12,7 @@ return new class extends Migration {
             $table->string('name');
             $table->enum('color', ['red', 'blue', 'green', 'yellow', 'purple', 'indigo', 'pink', 'gray'])->default('gray');
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-            $table->unique(['name', 'project_id']);
-            // not sure if it's necessary to have this unique constraint
-            $table->unique(['id', 'project_id']);
+            $table->unique(['project_id', 'name']);
         });
     }
 
