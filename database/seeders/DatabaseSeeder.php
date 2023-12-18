@@ -2,25 +2,44 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Project;
+use App\Models\Tag;
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+
+
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        \App\Models\User::factory(100)->create();
-        \App\Models\Project::factory(10)->create();
-        \App\Models\Task::factory(1000)->create();
-        \App\Models\Tag::factory(100)->create();
-        \App\Models\Attendance::factory(1000)->create();
-
-        \App\Models\Project::all()->each(function ($project) {
-            $project->users()->sync($project->user_id);
-            $project->users()->syncWithoutDetaching(\App\Models\User::all()->random(10));
+        // I will start with strong entities first (USERS, PROJECTS)
+        User::factory(50)->create();
+        Project::factory(5)->create(['owner_id' => User::all()->random()->id]);
+        // I will add owner to the users and add 4 more users
+        Project::all()->each(function (Project $project) {
+            $project->users()->attach($project->owner_id);
+            $project->users()->syncWithoutDetaching(User::all()->random(4));
         });
+
+        // ->create(['project_id' => 1]);
+        // I will add 3 tags to each project
+        Project::all()->each(function (Project $project) {
+            Tag::factory(3, ['project_id' => $project->id])->create();
+        });
+        // Project::all()->each(function (Project $project) {
+        //     $project->tags()->syncWithoutDetaching(Tag::factory(3)->create()->pluck('id'));
+        // });
+
+        // // I will add 20 tasks to each project and assign them to random users
+        // Project::all()->each(function (Project $project) {
+        //     Task::factory(20)->create(['project_id' => $project->id])->each(function (Task $task) use ($project) {
+        //         $task->users()->attach($project->users()->inRandomOrder()->first()->id);
+        //         $task->tags()->attach($project->tags()->inRandomOrder()->first()->id);
+        //     });
+        // });
+
+
     }
 }

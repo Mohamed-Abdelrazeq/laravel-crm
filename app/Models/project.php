@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'description', 'user_id'];
+    protected $fillable = ['title', 'description', 'owner_id'];
     public function tasks()
     {
         return $this->hasMany(Task::class, 'project_id');
@@ -18,8 +18,7 @@ class Project extends Model
     {
         return $this
             ->belongsToMany(User::class, 'projects_users', 'project_id', 'user_id')
-            ->withTimestamps()
-            ->as('project_users');
+            ->as('user_projects');
     }
 
     public function tags()

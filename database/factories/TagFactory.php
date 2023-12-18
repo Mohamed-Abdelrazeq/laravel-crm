@@ -10,7 +10,7 @@ class TagFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->word(),
-            'color' => $this->faker->randomElements(['red', 'blue', 'green', 'yellow', 'purple', 'indigo', 'pink', 'gray']),
+            'color' => $this->faker->randomElements(['red', 'blue', 'green', 'yellow', 'purple', 'indigo', 'pink', 'gray'])[0],
             'project_id' => $this->faker->numberBetween(1, 5)
         ];
     }
