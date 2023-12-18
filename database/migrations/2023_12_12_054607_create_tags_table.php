@@ -5,22 +5,19 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('color', ['red', 'blue', 'green', 'yellow', 'purple', 'indigo', 'pink', 'gray'])->default('gray');
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
+            $table->unique(['name', 'project_id']);
+            // not sure if it's necessary to have this unique constraint
+            $table->unique(['id', 'project_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('tags');

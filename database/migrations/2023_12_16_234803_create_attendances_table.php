@@ -11,11 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('attendances', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('project_id')->constrained();
             $table->timestamp('clock_in')->default(now());
             $table->timestamp('clock_out')->nullable();
             $table->timestamps();
+            $table->primary(['user_id', 'project_id', 'clock_in']);
         });
     }
 

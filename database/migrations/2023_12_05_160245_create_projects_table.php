@@ -10,12 +10,11 @@ return new class extends Migration {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100)->unique();
-            $table->string('description', 1000);
-            $table->foreignId('user_id')->constrained();
+            $table->text('description')->nullable();
+            $table->foreignId('owner_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
-
 
     public function down(): void
     {
