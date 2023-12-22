@@ -25,19 +25,28 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        // Create Project
+        // Validate request users
+        $users =
+            $request->validate([
+                'users' => 'sometimes|array',
+                'users.*' => 'sometimes|integer',
+            ])['users'] ?? [];
+        array_push($users, request()->user()->id);
+
+        // Create project
         $project = Project::create([
             ...$request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'required|string|max:1000',
             ]),
-            'user_id' => request()->user()->id,
-            'users' => [request()->user()->id],
+            'owner_id' => request()->user()->id,
+            'users' => $users,
         ]);
 
-        // Attach owner to project
-        $project->users()->attach(request()->user()->id);
+        // Attach users to projects_users
+        $project->users()->attach($users);
 
+        // Return response
         return response()->json([
             'message' => 'Project created successfully',
             'project' => new ProjectResource($project->load(['tasks', 'users']))
