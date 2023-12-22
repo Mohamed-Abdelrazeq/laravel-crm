@@ -19,9 +19,7 @@ class ProjectController extends Controller
     public function index()
     {
         return ProjectResource::collection(
-            request()->user()
-                ->projects
-            // ->load(['tasks', 'users'])
+            request()->user()->projects
         );
     }
 
@@ -48,7 +46,9 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        return new ProjectResource($project->load(['tasks', 'users']));
+        return new ProjectResource(
+            $project->load(['tasks', 'users'])
+        );
     }
 
     public function update(Request $request, Project $project)
