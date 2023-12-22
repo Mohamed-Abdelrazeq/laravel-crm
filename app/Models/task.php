@@ -34,14 +34,14 @@ class Task extends Model
         return $this->belongsTo(Project::class, 'project_id');
     }
 
-    public function assignedTo()
+    public function assignee()
     {
-        return $this->belongsTo(User::class, 'assigned_to');
+        return $this->belongsTo(User::class, 'assignee_id');
     }
 
-    public function createdBy()
+    public function reporter()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'reporter_id');
     }
 
     public function tags()
