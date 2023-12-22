@@ -60,15 +60,21 @@ class ProjectController extends Controller
         );
     }
 
+    // You can only update the title and description of a project
+    // to Add/Remove users from a project, use the ProjectUserController
+    // ProjectUserController.php is not developed yet
     public function update(Request $request, Project $project)
     {
+        // Update project
         $project->update([
+            // Validate request
             ...$request->validate([
                 'title' => 'sometimes|string|max:255',
                 'description' => 'sometimes|string|max:1000',
             ]),
-            'user_id' => request()->user()->id,
         ]);
+
+        // Return response
         return response()->json([
             'message' => 'Project updated successfully',
             'project' => new ProjectResource($project->load(['tasks', 'users']))
