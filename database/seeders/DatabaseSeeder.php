@@ -39,10 +39,8 @@ class DatabaseSeeder extends Seeder
         });
 
         // I will add 1 tags to each task
-        // Task::all()->each(function (Task $task) {
-        //     $task->tags()->attach(Tag::all()->random()->id);
-        // });
-
-
+        Task::all()->each(function (Task $task) {
+            $task->tags()->attach(Tag::all()->random()->id, ['project_id' => $task->project_id]);
+        });
     }
 }
