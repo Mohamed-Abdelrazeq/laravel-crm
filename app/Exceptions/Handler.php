@@ -33,7 +33,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        dd($exception);
+        // dd($exception);
         return response()->json([
             'success' => false,
             'message' => $exception->getMessage()
