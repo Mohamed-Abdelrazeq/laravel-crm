@@ -60,9 +60,6 @@ class ProjectController extends Controller
         );
     }
 
-    // You can only update the title and description of a project
-    // to Add/Remove users from a project, use the ProjectUserController
-    // ProjectUserController.php is not developed yet
     public function update(Request $request, Project $project)
     {
         // Update project
@@ -71,6 +68,7 @@ class ProjectController extends Controller
             ...$request->validate([
                 'title' => 'sometimes|string|max:255',
                 'description' => 'sometimes|string|max:1000',
+                'users' => 'sometimes|array',
             ]),
         ]);
 
