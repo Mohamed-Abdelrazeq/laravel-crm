@@ -28,7 +28,7 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        // Validate request users
+        // Validate request.users
         $users =
             $request->validate([
                 'users' => 'sometimes|array',
@@ -38,6 +38,7 @@ class ProjectController extends Controller
 
         // Create project
         $project = Project::create([
+            // Validate request
             ...$request->validate([
                 'title' => 'required|string|max:255',
                 'description' => 'required|string|max:1000',
