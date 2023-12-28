@@ -25,4 +25,9 @@ class Project extends Model
     {
         return $this->hasMany(Tag::class, 'project_id');
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'project_id');
+    }
 }
