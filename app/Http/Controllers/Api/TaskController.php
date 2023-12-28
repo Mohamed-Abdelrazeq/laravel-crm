@@ -70,7 +70,7 @@ class TaskController extends Controller
             'assigned_to' => 'sometimes',
             'tags' => 'sometimes|array',
         ]);
-        $tags = $data['tags'] ?? [];
+        $tags = $data['tags'] ?? $task->tags->pluck('id')->toArray();
 
         // VALIDATE THE TAGS
         if (!$this->isValidTags($request, $project, $tags)) {
@@ -83,9 +83,7 @@ class TaskController extends Controller
         $task->update($data);
 
         // SYNC THE TAGS
-        if (count($tags) > 0) {
-            $task->tags()->sync($tags);
-        }
+        $task->tags()->sync($tags);
 
         // RETURN THE TASK
         return new TaskResource($task);
