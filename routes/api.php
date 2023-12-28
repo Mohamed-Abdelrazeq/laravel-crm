@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\AuthController;
@@ -17,8 +18,12 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth:sanctum');
 
 Route::apiResource('projects', ProjectController::class);
+
 Route::apiResource('projects.tasks', TaskController::class)
     ->scoped();
 
 Route::apiResource('projects.tags', TagController::class)
+    ->scoped();
+
+Route::apiResource('project.attendance', AttendanceController::class)
     ->scoped();
