@@ -28,13 +28,8 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        // Validate request.users
-        $users =
-            $request->validate([
-                'users' => 'sometimes|array',
-                'users.*' => 'sometimes|integer',
-            ])['users'] ?? [];
-        array_push($users, request()->user()->id);
+        // Get users from request
+        $users = $this->getUsersFromRequest($request, []);
 
         // Create project
         $project = Project::create([
@@ -43,12 +38,12 @@ class ProjectController extends Controller
                 'title' => 'required|string|max:255',
                 'description' => 'required|string|max:1000',
             ]),
-            'owner_id' => request()->user()->id,
             'users' => $users,
+            'owner_id' => request()->user()->id,
         ]);
 
         // Attach users to projects_users
-        $project->users()->attach($users);
+        $project->users()->sync($users);
 
         // Return response
         return response()->json([
@@ -66,15 +61,21 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
+        // Get users from request
+        $users = $this->getUsersFromRequest($request, $project->users->pluck('id')->toArray());
+
         // Update project
         $project->update([
             // Validate request
             ...$request->validate([
                 'title' => 'sometimes|string|max:255',
                 'description' => 'sometimes|string|max:1000',
-                'users' => 'sometimes|array',
             ]),
+            'users' => $users,
         ]);
+
+        // Attach users to projects_users
+        $project->users()->sync($users);
 
         // Return response
         return response()->json([
@@ -89,5 +90,21 @@ class ProjectController extends Controller
         return response()->json([
             'message' => 'Project deleted successfully'
         ]);
+    }
+
+    private function getUsersFromRequest(Request $request, array $defaultValue): array
+    {
+        // Validate request.users
+        $users = $request->validate([
+            'users' => 'sometimes|array',
+            'users.*' => 'sometimes|integer',
+        ])['users'] ?? $defaultValue;
+
+        // add owner to users if not exists
+        if (!in_array(request()->user()->id, $users)) {
+            array_push($users, request()->user()->id);
+        }
+
+        return $users;
     }
 }
