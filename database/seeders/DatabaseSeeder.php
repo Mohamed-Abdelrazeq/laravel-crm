@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // I will start with strong entities first (USERS, PROJECTS)
         User::factory(50)->create();
-        Project::factory(5)->create(['owner_id' => User::all()->random()->id]);
+        Project::factory(5)->create();
 
         // I will add owner to the users and add 4 more users
         Project::all()->each(function (Project $project) {

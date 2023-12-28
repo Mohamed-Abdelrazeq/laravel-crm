@@ -13,7 +13,7 @@ class ProjectFactory extends Factory
         return [
             'title' => $this->faker->unique()->sentence(1),
             'description' => $this->faker->paragraph(10),
-            'owner_id' => $this->faker->numberBetween(1, 100),
+            'owner_id' => $this->faker->numberBetween(1, 50),
             'created_at' => $createdAt,
             'updated_at' => $updatedAt,
         ];
